@@ -1,0 +1,20 @@
+
+After that when everything is done we will check for real time updates and then we will create a user page (not settings) so that the user could check his content(we search based on username) and retrive all posts he have sent to the other. I think we could just use the feed.  
+
+
+
+Client
+
+Inside the header we should create a settings page and then make it accessible for to LeftSide
+LeftSide should be able to open the settings page, we could navigate to it ?
+
+
+Server
+When the image is too big 
+
+We should build a logout route so that the user can login again
+
+(
+When we comment on a post then we shall search for it that post 
+and then we should update the comment section(we create one inside the schema )
+)
