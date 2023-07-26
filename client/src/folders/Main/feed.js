@@ -1,15 +1,14 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faLock, faArrowRight, faArrowLeft, faGear, faComment } from '@fortawesome/free-solid-svg-icons';
+import { faComment } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from "react";
 import addUser from '../../image/add-user.png'; 
 import deleteUser from '../../image/delete-user.png'; 
 import { getFriends, handleDeletefriend, handleFriend, getAllPosts} from '../../actions';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import io from 'socket.io-client'
 const socket = io('http://localhost:4500');
 
 const Feed = ({context}) => {
-    const [recivedAvatars, setRecivedAvatars] = useState([]);
     const [commentStates, setCommentStates] = useState([]);
 
     const {
@@ -25,6 +24,7 @@ const Feed = ({context}) => {
 
     const handleSub = (e, postId, index) => {
         e.preventDefault();
+        // When the user submit a comment 
         // setCommentStates((prevStates) => {
         //     const newStates = [...prevStates];
         //     newStates[index] = !newStates[index];

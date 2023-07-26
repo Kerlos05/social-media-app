@@ -1,10 +1,8 @@
-import { BrowserRouter, Routes, Route, Outlet, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faLock, faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import { useState } from "react";
 import avatar from '../image/avatar.png'; 
-import { useContext } from "react";
-import { AppContext } from "../AppContext";
 
 const Register = () => {
   const [newUsername, setNewUsername] = useState(''); 

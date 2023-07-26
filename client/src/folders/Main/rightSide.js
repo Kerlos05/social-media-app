@@ -1,15 +1,12 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faLock, faArrowRight, faArrowLeft, faGear } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useState } from "react";
-import { getFriends, handleDeletefriend, handleFriend, getAllPosts} from '../../actions';
-import addUser from '../../image/add-user.png'; 
+import { useEffect } from "react";
+import { getFriends, handleDeletefriend} from '../../actions';
 import deleteUser from '../../image/delete-user.png'; 
 import '../../style/mainPage.css'
 import io from 'socket.io-client'
 const socket = io('http://localhost:4500');
 
 const RightSide = ({ context }) => {
-    const { username, addedFriends, setAddedFriends, recivedPost, setRecivedPost } = context;
+    const { username, addedFriends, setAddedFriends } = context;
 
     
     useEffect(() => {

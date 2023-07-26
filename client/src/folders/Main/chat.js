@@ -1,8 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faComment, faTrash, faCopy, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faCopy } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect, useRef } from "react";
 import Header from './header';
-import Feed from './feed';
 import '../../style/mainPage.css'; 
 import deleteUser from '../../image/delete-user.png'; 
 import { getFriends, handleDeletefriend, deleteMessage, sendNewMessage, getAllMessages } from '../../actions';

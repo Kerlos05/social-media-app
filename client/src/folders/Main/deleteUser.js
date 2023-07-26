@@ -1,7 +1,4 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faComment } from '@fortawesome/free-solid-svg-icons';
-import { useState, useEffect } from "react";
-import Header from './header';
+import { useEffect } from "react";
 import '../../style/mainPage.css'; 
 import { getFriends, getAllPosts, deleteUser } from '../../actions';
 import { useContext } from "react";

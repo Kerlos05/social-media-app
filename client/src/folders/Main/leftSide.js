@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faLock, faArrowRight, faArrowLeft, faGear } from '@fortawesome/free-solid-svg-icons';
+import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from "react";
-import { getFriends } from '../../actions';
 import { useNavigate } from 'react-router-dom';
 
 const LeftSide = ({context}) => {

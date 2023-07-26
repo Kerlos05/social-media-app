@@ -1,12 +1,9 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faComment, faTrash, faUser } from '@fortawesome/free-solid-svg-icons';
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import Header from './header';
 import '../../style/mainPage.css'; 
-import { getAllPosts, getFriends, getImage, handleLogout } from '../../actions';
+import { handleLogout } from '../../actions';
 import { useContext } from "react";
 import { AppContext } from "../../AppContext";
-import defaultAvatar from '../../image/avatar.png'; 
 import { useNavigate } from 'react-router-dom';
 import io from 'socket.io-client'
 import DeleteUser from './deleteUser';
@@ -15,16 +12,7 @@ const socket = io('http://localhost:4500');
 const Settings = () => {
     const context = useContext(AppContext);
     const {
-        userContent, 
-        commentStates, 
-        setRecivedPost, 
-        showUserPage, 
-        setAddedFriends, 
-        setUserContent,
-        setCommentStates, 
         username, 
-        addedFriends, 
-        recivedPost,
         setLogin,  
         setUsername,
         avatar

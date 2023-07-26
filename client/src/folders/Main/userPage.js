@@ -1,15 +1,11 @@
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import Header from './header';
 import '../../style/mainPage.css'; 
 import { useContext } from "react";
 import { AppContext } from "../../AppContext";
-import addUser from '../../image/add-user.png'; 
-import deleteUser from '../../image/delete-user.png'; 
-import { getFriends, handleDeletefriend, handleFriend, getAllPosts, handleDeletePost } from '../../actions';
-import LeftSide from './leftSide';
+import {getAllPosts, handleDeletePost } from '../../actions';
 import io from 'socket.io-client'
 const socket = io('http://localhost:4500');
 

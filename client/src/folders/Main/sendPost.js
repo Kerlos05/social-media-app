@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faLock, faArrowRight, faArrowLeft, faGear, faImage, faLink, faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useState } from "react";
+import { faImage, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { useState } from "react";
 import { getAllPosts } from '../../actions';
 import { throttle } from 'lodash'; 
 import io from 'socket.io-client'

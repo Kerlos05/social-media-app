@@ -1,5 +1,3 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faComment } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from "react";
 import Header from './header';
 import LeftSide from './leftSide';
@@ -13,7 +11,7 @@ import { AppContext } from "../../AppContext";
 
 const MainPage = () => {
     const context = useContext(AppContext);
-    const { setAddedFriends, username, setRecivedPost, setUserContent, setAvatar, showUserPage} = context;
+    const { setAddedFriends, username, setRecivedPost, setUserContent, setAvatar} = context;
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
     window.addEventListener('resize', async() => {

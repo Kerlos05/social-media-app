@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { handleLogout, handleFriend, getFriends } from '../../actions';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import io from 'socket.io-client'
 const socket = io('http://localhost:4500');
 
