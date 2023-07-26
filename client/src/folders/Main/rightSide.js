@@ -52,28 +52,3 @@ const RightSide = ({ context }) => {
 }
 
 export default RightSide; 
-
-//     <div key={index}>
-//         <div className='bg-light p-3 me-4 d-flex justify-content-between align-items-center' key={index}>
-//             <div className='d-flex align-items-center '>
-//                 <i className='icon'> 
-//                     <img key={index} width={200} src={item.avatar} />
-//                 </i>
-//                 <div className='ms-4 d-flex flex-column'>
-//                     <p style={{'margin': '0', 'padding': '0'}}>{item.username}</p>
-//                 </div>
-//             </div>
-//             <div>
-//               {item.username !== username && (
-//                 <button className='btn ms-2' 
-//                 onClick={(addedFriends[0].friends.includes(item.username)) ? () => handleDeletefriend(item.username, setAddedFriends, username) : () =>  handleFriend(item.username, setAddedFriends, username)}>
-//                     <img src={`${(addedFriends[0].friends.includes(item.username)) ? deleteUser : addUser}`} alt='avatar' />
-//                 </button>
-//               )}
-//             </div>
-//         </div>
-
-      
-//     </div>
-// )
-// })}
