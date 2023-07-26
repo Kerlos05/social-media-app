@@ -8,10 +8,13 @@ const feedSchema = new Schema({
     },
     title: {
         type: String,
-        required: true
     },
-    image: {
-        type: String
+    post: {
+        type: String,
+       
+    },
+    comments:  {
+        type: [String]
     },
     avatar: {
         type: [String]

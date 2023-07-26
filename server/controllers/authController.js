@@ -29,4 +29,20 @@ const handleLogin = async (req, res) => {
     }
 }
 
-module.exports =  handleLogin ;
+const handleLogout = (req, res) => {
+    const user = req.body.username;
+
+    if (!user) {
+      return res.status(400).json({ message: 'Username is required' });
+    }
+  
+    if (!isLoggedIn[user]) {
+      return res.status(401).json({ message: 'User is not logged in' });
+    }
+  
+    isLoggedIn[user] = false;
+    res.status(200).json({ message: 'Logout successful' });
+}; 
+
+
+module.exports =  {handleLogin, handleLogout} ;

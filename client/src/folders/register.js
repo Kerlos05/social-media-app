@@ -3,15 +3,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { useState } from "react";
 import avatar from '../image/avatar.png'; 
+import { useContext } from "react";
+import { AppContext } from "../AppContext";
 
-const Register = ({setLogin}) => {
-  const [username, setUsername] = useState(''); 
+const Register = () => {
+  const [newUsername, setNewUsername] = useState(''); 
   const [password, setPassword] = useState(''); 
   const [message, setMessage] = useState(''); 
   const [image, setImage] = useState(''); 
-  const [recivedImage, setRecivedImage] = useState([]); 
 
   
+  const navigate = useNavigate(); 
+
   const toBase64 = (e) => {
     e.preventDefault();
     var reader = new FileReader; 
@@ -26,6 +29,13 @@ const Register = ({setLogin}) => {
 
   const handleSub = async(e) => {
     e.preventDefault();
+    if(newUsername.length > 8 || newUsername.length < 4){
+      setMessage('Username must be between 4 and 8 characters'); 
+      return ; 
+    } else if(password.length > 8 || password.length < 4){
+      setMessage('Passowrd must be between 4 and 8 characters'); 
+      return ; 
+    }
     await fetch('http://localhost:8080/register', {
       method: 'POST',
       crossDomain: true, 
@@ -35,15 +45,16 @@ const Register = ({setLogin}) => {
         'Access-Control-Allow-Origin': '*', 
       },
       body: JSON.stringify({
-        user: username, 
+        user: newUsername, 
         pwd: password,
         base64: image || avatar
       })
     })
     .then(res =>  {
       if(res.ok){
-       setLogin(true); 
-       setImage(''); 
+        navigate('/'); 
+        setImage(''); 
+        setNewUsername('')
       } else{
         return res.json().then(data => {
           setMessage(data.message);
@@ -66,13 +77,10 @@ const Register = ({setLogin}) => {
                 style={{ display: 'none' }}
               />
               {image == '' || image == null ? (
-                <img width={200} src={avatar} alt="Default Avatar" />
+                <img width={175} height={175} src={avatar} alt="Default Avatar" />
               ) : (
-                <img width={200} src={image} alt="Selected Image" />
+                <img width={175} height={175} src={image} alt="Selected Image" />
               )}
-              {recivedImage.map((data, index) => (
-                <img width={200} src={data.image} key={index} alt={`Received Image ${index}`} />
-              ))}
             </label>
           </div>
           <div className='mb-3 input-group'>
@@ -81,8 +89,8 @@ const Register = ({setLogin}) => {
               type='text'
               className='form-control'
               placeholder='Username' 
-              value={username}
-              onChange={e => setUsername(e.target.value)}
+              value={newUsername}
+              onChange={e => setNewUsername(e.target.value)}
               required
             />
           </div>
@@ -97,7 +105,7 @@ const Register = ({setLogin}) => {
               required
             />
           </div>
-          <div className='d-flex flex-column text-center mt-3'>
+          <div className='d-flex flex-column text-center mt-4'>
               <div className='d-flex align-items-center justify-content-between '>
                 <button className='btn btn-primary' type='submit'>Sign up</button>
                 <Link  to='/' className='link'>Login</Link>

@@ -1,27 +1,15 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faArrowRight, faArrowLeft, faGear, faImage, faLink, faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from "react";
-import Header from './header'; 
+import { getAllPosts } from '../../actions';
+import { throttle } from 'lodash'; 
+import io from 'socket.io-client'
+const socket = io('http://localhost:4500');
 
-
-const SendPost = ({username}) => {
-    const [avatar, setAvatar] = useState([]);
+const SendPost = ({context}) => {
     const [image, setImage] = useState(''); 
     const [messagePost, setMessagePost] = useState('');
-
-    const getImage = async () => {
-        await fetch("http://localhost:8080/get-image", {
-            method: "POST", 
-            headers: {'Content-Type': 'application/json'}, 
-            crossDomain: true, 
-            body:JSON.stringify({
-                username: username
-            }), 
-        })
-        .then((res) => res.json()).then((data) =>{
-            return setAvatar([data.data]); 
-        })
-    }
+    const {username, avatar, setRecivedPost, setUserContent} =  context; 
     
     const toBase64 = (e) => {
         e.preventDefault();
@@ -35,47 +23,48 @@ const SendPost = ({username}) => {
         }
     }
 
-    useEffect(() => {
-        getImage(); 
-    }, [])
 
-    const handleSub = async(e) => {
-        e.preventDefault(); 
-        const userAvatar = avatar.map((item) => {return item}); 
-        fetch('http://localhost:8080/handle-post', {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json', 
-                Accept: 'application/json', 
-                'Access-Control-Allow-Origin': '*', 
-            },
-            body: JSON.stringify({
-                username: username, 
-                image: image , 
-                title: messagePost,
-                avatar: userAvatar
+    const handleSub = throttle(
+        async(e) => {
+            e.preventDefault(); 
+            const userAvatar = avatar.map((item) => {return item}); 
+            fetch('http://localhost:8080/handle-post', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json', 
+                    Accept: 'application/json', 
+                    'Access-Control-Allow-Origin': '*', 
+                },
+                body: JSON.stringify({
+                    username: username, 
+                    post: image , 
+                    title: messagePost,
+                    avatar: userAvatar
+                })
             })
-        })
-        .then(res => {
-            if(res.ok){
-                setImage(''); 
-                setMessagePost(''); 
-            }
-        })
-    }
+            .then(res => {
+                if(res.ok){
+                    getAllPosts(setRecivedPost, setUserContent); 
+                    setImage(''); 
+                    setMessagePost(''); 
+                    socket.emit('updatePostUI')
+                }
+            })
+        },1000
+    )
 
     return(
         <>  
         {avatar.length > 0 ? (
             avatar.map((data, index) => {
                 return(
-                    <div className='bg-light p-3 me-4 d-flex justify-content-between align-items-center' key={index}>
-                        <div className='container '> 
+                    <div className='p-3 sendPost bg-light' key={index} >
+                        <div className='container'> 
                             <div className='inputSection gap-4 '>
                                 <form onSubmit={handleSub}>
                                   <div className='d-flex align-items-center gap-5'>
                                     <i className='icon'> 
-                                        <img key={index} width={200} src={data} />
+                                        <img key={index} width={100} src={data} />
                                     </i>
                                     <input 
                                         type="text" 
@@ -97,7 +86,7 @@ const SendPost = ({username}) => {
                                                 onChange={toBase64}
                                                 style={{ display: 'none' }}
                                             />
-                                            <p style={{margin: '0',padding: '0'}}><FontAwesomeIcon icon={faImage}></FontAwesomeIcon>Image</p>
+                                            <p style={{margin: '0',padding: '0', cursor: 'pointer'}}><FontAwesomeIcon icon={faImage} className='me-2'></FontAwesomeIcon>Image</p>
                                         </label>
                                         <button type='submit' className='btn btn-primary'>POST</button>
                                     </div>
@@ -106,7 +95,7 @@ const SendPost = ({username}) => {
                                 {image !== '' ?  
                                     <div className='d-flex align-items-center justify-content-between mb-3 mt-3' key={index}>
                                         <div style={{outline: 'dashed 2px blue'}} className='p-3'>
-                                            <img width={200} src={image} key={index}  />
+                                            <img width={200} src={image}  />
                                         </div>
                                         <button 
                                             className='btn'

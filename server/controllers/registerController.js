@@ -1,4 +1,5 @@
 const User = require('../model/User');
+const Chat = require('../model/Chat');
 const argon2 = require('argon2');
 
 const handleNewUser = async (req, res) => {
@@ -16,15 +17,18 @@ const handleNewUser = async (req, res) => {
     try {
         
         const hashedPwd = await argon2.hash(pwd);
-        const result = await User.create({
+        await User.create({
             "username": user,
             "password": hashedPwd,
             'image': base64
         });
         
-        console.log(result);
+        await Chat.create({
+            "username": user,
+            "message": ''
+        })
         
-        res.status(201).json({ 'success': `New user ${user} created!` });
+        res.status(201).json({ 'success': `New user ${user} created!` }).end();
     } catch (err) {
         res.status(500).json({ 'message': err.message });
     }

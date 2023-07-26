@@ -1,5 +1,6 @@
 
 const User = require('../model/User'); 
+const Chat = require('../model/Chat');
 
 const handleNewFriend = async(req, res) => {
    const {username, friendToAdd} = req.body; 
@@ -11,8 +12,14 @@ const handleNewFriend = async(req, res) => {
     if(!foundFriend || !foundUser){
       return res.status(404).json({'Message' : `${friendToAdd || username} not found`});
     } else{
+      const userFriendsTo = foundUser.friendsTo;
+      const friendFriendsTo = foundFriend.friendsTo;
 
-      foundFriend.friendsTo.push(username); 
+      if (userFriendsTo.includes(friendToAdd) || friendFriendsTo.includes(username)) {
+        return res.status(400).json({ 'Message': `Duplicate friend request` });
+      }
+
+      foundFriend.friendsTo.push(username);
       foundUser.friendsTo.push(friendToAdd);
 
       try {
@@ -25,8 +32,9 @@ const handleNewFriend = async(req, res) => {
 }
 
 const handleDeleteFriend = async(req, res) => {
-  const friend = req.body.friendToAdd;
+  const friend = req.body.friendToDelete;
   const username = req.body.username;
+
   try{
     const foundUser = await User.findOneAndUpdate(
       { username: username },
@@ -40,17 +48,15 @@ const handleDeleteFriend = async(req, res) => {
       { new: true }
     );
   
-    // When two users are chating with each other we have to delete that chat
-    // await User.updateMany(
-    //   { username: username },
-    //   { $pull: { message: { $elemMatch: { $eq: friend } } } }
-    // ).exec();
+    await Chat.updateMany(
+      { username: username },
+      { $pull: { message: { $elemMatch: { $eq: friend } } } }
+    ).exec();
   
-    // await User.updateMany(
-    //   { username: friend },
-    //   { $pull: { message: { $elemMatch: { $eq: username } } } }
-    // ).exec();  
-
+    await Chat.updateMany(
+      { username: friend },
+      { $pull: { message: { $elemMatch: { $eq: username } } } }
+    ).exec();  
 
     res.status(200).json({foundUser}).end();
 
@@ -59,13 +65,17 @@ const handleDeleteFriend = async(req, res) => {
   }
 }
 
-
 const handleGetFriend = async (req, res) => {
   const { username } = req.params;
-  const foundUser = await User.findOne({ username });
-  const friends = foundUser.friendsTo
+  const foundUser = await User.findOne({ username }); 
 
-  res.json({ friends })
+  if (!foundUser) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  const friends = foundUser.friendsTo || []; 
+
+  res.json({ friends });
 };
 
 
